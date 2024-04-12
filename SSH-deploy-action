@@ -1,0 +1,36 @@
+name: Build and Deploy Jekyll via SSH
+description: 💾 A Github Action to deploy your Jekyll site via SSH  
+  
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main  # Or your default branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: 💎 Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2.3'  # Adjust as needed for your project
+
+    - name: 🏗️ Build Jekyll site 
+      run: |
+        bundle install
+        bundle exec jekyll build
+
+    - name: 🚀 Deploy via SSH
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        source: "./_site/*" # Adjust if required
+        target: "/public_html" # Set to your deployment directory (for example /public_html)
+        strip_components: 1 # This ensures that a subdirectory is not created
