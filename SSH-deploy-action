@@ -1,5 +1,5 @@
 name: Build and Deploy Jekyll via SSH
-description: 💾 A Github Action to deploy your Jekyll site via SSH  
+description: 💾 A Github Action to build and then deploy your Jekyll site via SSH  
   
 on:
   workflow_dispatch:
